@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary: #4f46e5;       /* Indigo */
-    --primary-hover: #4338ca;
-    --secondary: #ec4899;     /* Pink */
-    --bg-light: #f8fafc;
-    --surface: #ffffff;
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
-    --shadow-hover: 0 20px 40px -10px rgba(79, 70, 229, 0.15);
-    --radius-lg: 20px;
-    --radius-md: 12px;
+    /* Glass settings */
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --text-main: #1e1e2f;
+    --text-muted: #52526b;
+    
+    /* Vibrant Gradients for Buttons and Accents */
+    --grad-primary: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
+    --grad-blue: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --grad-purple: linear-gradient(135deg, #b224ef 0%, #7579ff 100%);
+    --grad-orange: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
+    --grad-green: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
 
 body {
@@ -20,17 +20,21 @@ body {
     margin: 0;
     min-height: 100vh;
     color: var(--text-main);
-    background-color: #f4f7fe;
-    /* Soft, beautiful animated gradient background */
-    background-image: 
-        radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, transparent 50%), 
-        radial-gradient(at 50% 0%, hsla(225,39%,30%,0.05) 0, transparent 50%), 
-        radial-gradient(at 100% 0%, hsla(339,49%,30%,0.05) 0, transparent 50%);
-    background-attachment: fixed;
+    
+    /* The Magic: Animated Colorful Background */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 h1, h2, h3, h4 {
-    font-weight: 600;
+    font-weight: 700;
     margin: 0;
 }
 
@@ -49,28 +53,40 @@ h1, h2, h3, h4 {
     overflow: hidden;
 }
 
-/* --- Premium Cards --- */
+/* --- Colorful Glass Cards --- */
 .login-card, .action-card, .form-container {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: var(--shadow-soft);
-    border-radius: var(--radius-lg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
     padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .login-card {
     width: 100%;
     max-width: 420px;
-    animation: slideUp 0.6s ease-out forwards;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Colorful Top Border on Login */
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--grad-primary);
 }
 
 .login-card h2 {
     text-align: center;
-    font-size: 2rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    font-size: 2.2rem;
+    background: var(--grad-purple);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 30px;
@@ -84,17 +100,17 @@ h1, h2, h3, h4 {
 label {
     display: block;
     margin-bottom: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--text-muted);
 }
 
 input[type="text"], input[type="password"] {
     width: 100%;
-    padding: 14px 16px;
-    background: var(--bg-light);
-    border: 2px solid transparent;
-    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     color: var(--text-main);
@@ -104,81 +120,87 @@ input[type="text"], input[type="password"] {
 
 input[type="text"]:focus, input[type="password"]:focus {
     outline: none;
-    background: var(--surface);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    border-color: #f857a6;
+    box-shadow: 0 0 15px rgba(248, 87, 166, 0.3);
+    background: #ffffff;
 }
 
-/* --- Beautiful Buttons --- */
+/* --- Vibrant Buttons --- */
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: var(--grad-primary);
     color: white;
     border: none;
-    padding: 14px;
+    padding: 15px;
     width: 100%;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 1.05rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 88, 88, 0.4);
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(255, 88, 88, 0.6);
 }
 
 .btn-logout {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
+    background: white;
+    color: #ff5858;
     padding: 10px 24px;
-    border-radius: var(--radius-md);
+    border-radius: 10px;
+    border: 2px solid #ff5858;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     transition: all 0.3s;
 }
 
 .btn-logout:hover {
-    background: #ef4444;
+    background: var(--grad-primary);
     color: white;
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    border-color: transparent;
+    box-shadow: 0 5px 15px rgba(255, 88, 88, 0.4);
 }
 
 /* --- Dashboard Sidebar --- */
 .sidebar {
     width: 280px;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--glass-border);
     padding: 40px 20px;
     display: flex;
     flex-direction: column;
-    z-index: 10;
 }
 
 .sidebar h3 {
     text-align: center;
-    color: var(--text-main);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     margin-bottom: 40px;
-    font-weight: 700;
+    background: var(--grad-orange);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .sidebar-menu a {
-    color: var(--text-muted);
+    color: var(--text-main);
     text-decoration: none;
     padding: 16px 20px;
-    border-radius: var(--radius-md);
+    border-radius: 12px;
     display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
+    margin-bottom: 10px;
+    font-weight: 600;
     transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .sidebar-menu a:hover {
-    background: var(--bg-light);
-    color: var(--primary);
-    transform: translateX(5px);
+    background: var(--grad-blue);
+    color: white;
+    transform: translateX(8px);
+    box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
 }
 
 /* --- Main Content Area --- */
@@ -192,18 +214,24 @@ input[type="text"]:focus, input[type="password"]:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
     padding: 24px 40px;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
     margin-bottom: 40px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-.user-info h2 { font-size: 1.6rem; color: var(--text-main); }
-.user-info p { margin: 8px 0 0 0; color: var(--primary); font-weight: 500; }
+.user-info h2 { font-size: 1.8rem; color: var(--text-main); }
+.user-info p { 
+    margin: 8px 0 0 0; 
+    font-weight: 700; 
+    background: var(--grad-purple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
 
 /* --- Dashboard Grid & Module Cards --- */
 .module-grid {
@@ -213,42 +241,49 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 .action-card {
-    padding: 30px;
-    border: 1px solid var(--border);
+    padding: 35px;
+    position: relative;
+    overflow: hidden;
 }
 
+/* Colorful accents for different cards */
+.action-card:nth-child(1)::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--grad-blue); }
+.action-card:nth-child(2)::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--grad-green); }
+.action-card:nth-child(3)::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--grad-orange); }
+
 .action-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-    border-color: transparent;
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .action-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
     color: var(--text-main);
-    font-size: 1.2rem;
-    margin-bottom: 24px;
 }
 
 .btn-link {
     display: block;
     width: 100%;
-    padding: 14px;
-    margin-bottom: 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    padding: 15px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
     color: var(--text-main);
-    border-radius: var(--radius-md);
+    border-radius: 12px;
     text-align: center;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
 }
 
 .btn-link:hover {
-    background: var(--bg-light);
-    border-color: var(--primary);
-    color: var(--primary);
+    background: var(--grad-purple);
+    color: white;
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(178, 36, 239, 0.3);
 }
 
 /* --- Data Tables --- */
@@ -256,41 +291,27 @@ input[type="text"]:focus, input[type="password"]:focus {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    margin-top: 20px;
+    margin-top: 25px;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
 
 .data-table th, .data-table td {
-    padding: 16px;
+    padding: 18px;
     text-align: left;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .data-table th {
-    color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.9rem;
+    background: var(--grad-blue);
+    color: white;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.data-table tr:last-child td {
-    border-bottom: none;
-}
-
-.data-table tbody tr {
-    transition: background-color 0.2s ease;
+    letter-spacing: 1px;
 }
 
 .data-table tbody tr:hover {
-    background-color: var(--bg-light);
-}
-
-/* --- Animations --- */
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.action-card, .form-container {
-    animation: slideUp 0.5s ease-out forwards;
+    background-color: rgba(0, 198, 255, 0.05);
 }
