@@ -1,216 +1,211 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    /* High-Tech Cyber Color Palette */
-    --bg-main: #0b0f19;
-    --bg-panel: rgba(17, 24, 39, 0.7);
-    --accent-cyan: #00f0ff;
-    --accent-purple: #7000ff;
-    --text-primary: #e2e8f0;
-    --text-muted: #94a3b8;
-    --border-glow: rgba(0, 240, 255, 0.3);
-    --danger: #ff003c;
-    --success: #05fb7a;
+    --primary: #4f46e5;       /* Indigo */
+    --primary-hover: #4338ca;
+    --secondary: #ec4899;     /* Pink */
+    --bg-light: #f8fafc;
+    --surface: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+    --shadow-hover: 0 20px 40px -10px rgba(79, 70, 229, 0.15);
+    --radius-lg: 20px;
+    --radius-md: 12px;
 }
 
 body {
-    font-family: 'Space Grotesk', sans-serif;
-    background: radial-gradient(circle at top right, #1a1c2c 0%, var(--bg-main) 100%);
-    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     min-height: 100vh;
+    color: var(--text-main);
+    background-color: #f4f7fe;
+    /* Soft, beautiful animated gradient background */
+    background-image: 
+        radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, transparent 50%), 
+        radial-gradient(at 50% 0%, hsla(225,39%,30%,0.05) 0, transparent 50%), 
+        radial-gradient(at 100% 0%, hsla(339,49%,30%,0.05) 0, transparent 50%);
+    background-attachment: fixed;
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Rajdhani', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    font-weight: 600;
+    margin: 0;
 }
 
-/* --- Glassmorphism Cards --- */
-.login-wrapper, .dashboard-layout {
-    display: flex;
-    height: 100vh;
-}
-
+/* --- Layouts --- */
 .login-wrapper {
+    display: flex;
     justify-content: center;
     align-items: center;
-    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+    height: 100vh;
+    padding: 20px;
 }
 
+.dashboard-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- Premium Cards --- */
 .login-card, .action-card, .form-container {
-    background: var(--bg-panel);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius-lg);
     padding: 40px;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .login-card {
     width: 100%;
-    max-width: 400px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Neon Top Border Effect */
-.login-card::before, .action-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    max-width: 420px;
+    animation: slideUp 0.6s ease-out forwards;
 }
 
 .login-card h2 {
     text-align: center;
-    color: var(--accent-cyan);
     font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 30px;
-    text-shadow: 0 0 10px var(--border-glow);
 }
 
 /* --- Form Elements --- */
-.form-group { margin-bottom: 25px; }
+.form-group {
+    margin-bottom: 24px;
+}
 
 label {
     display: block;
     margin-bottom: 8px;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-muted);
-    font-size: 0.9rem;
-    letter-spacing: 1px;
 }
 
 input[type="text"], input[type="password"] {
     width: 100%;
-    padding: 12px 15px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: white;
-    font-family: 'Space Grotesk', sans-serif;
+    padding: 14px 16px;
+    background: var(--bg-light);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--text-main);
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
 input[type="text"]:focus, input[type="password"]:focus {
     outline: none;
-    border-color: var(--accent-cyan);
-    box-shadow: 0 0 15px var(--border-glow);
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--surface);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
-/* --- High-Tech Buttons --- */
+/* --- Beautiful Buttons --- */
 .btn-primary {
-    background: linear-gradient(45deg, var(--accent-cyan), #00a2ff);
-    color: #000;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
     border: none;
     padding: 14px;
     width: 100%;
-    border-radius: 8px;
-    font-weight: 700;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 1.1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1.05rem;
     cursor: pointer;
-    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
     transition: all 0.3s ease;
-    box-shadow: 0 0 10px var(--border-glow);
 }
 
 .btn-primary:hover {
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
     transform: translateY(-2px);
-}
-
-/* --- Dashboard Layout --- */
-.sidebar {
-    width: 260px;
-    background: rgba(10, 15, 26, 0.9);
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 30px 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar h3 {
-    text-align: center;
-    color: var(--accent-purple);
-    font-size: 1.8rem;
-    margin-bottom: 40px;
-    text-shadow: 0 0 10px rgba(112, 0, 255, 0.4);
-}
-
-.sidebar-menu a {
-    color: var(--text-muted);
-    text-decoration: none;
-    padding: 15px 30px;
-    display: block;
-    transition: all 0.3s;
-    border-left: 3px solid transparent;
-}
-
-.sidebar-menu a:hover {
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-primary);
-    border-left-color: var(--accent-cyan);
-    padding-left: 35px; /* Slide effect */
-}
-
-.main-content {
-    flex: 1;
-    padding: 40px;
-    overflow-y: auto;
-    background: url('https://www.transparenttextures.com/patterns/cubes.png');
-}
-
-.top-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--bg-panel);
-    backdrop-filter: blur(10px);
-    padding: 20px 30px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    margin-bottom: 40px;
-}
-
-.user-info h2 {
-    margin: 0;
-    color: var(--text-primary);
-}
-
-.user-info p {
-    margin: 5px 0 0 0;
-    color: var(--accent-cyan);
-    font-weight: 500;
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
 }
 
 .btn-logout {
-    background: transparent;
-    color: var(--danger);
-    border: 1px solid var(--danger);
-    padding: 8px 20px;
-    border-radius: 6px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    padding: 10px 24px;
+    border-radius: var(--radius-md);
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s;
 }
 
 .btn-logout:hover {
-    background: var(--danger);
+    background: #ef4444;
     color: white;
-    box-shadow: 0 0 15px rgba(255, 0, 60, 0.4);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
 }
 
-/* --- Dashboard Grids & Cards --- */
+/* --- Dashboard Sidebar --- */
+.sidebar {
+    width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.sidebar h3 {
+    text-align: center;
+    color: var(--text-main);
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+.sidebar-menu a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu a:hover {
+    background: var(--bg-light);
+    color: var(--primary);
+    transform: translateX(5px);
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 24px 40px;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    margin-bottom: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.user-info h2 { font-size: 1.6rem; color: var(--text-main); }
+.user-info p { margin: 8px 0 0 0; color: var(--primary); font-weight: 500; }
+
+/* --- Dashboard Grid & Module Cards --- */
 .module-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -219,68 +214,83 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 .action-card {
     padding: 30px;
-    position: relative;
+    border: 1px solid var(--border);
 }
 
 .action-card:hover {
     transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-hover);
+    border-color: transparent;
 }
 
 .action-card h3 {
-    margin-top: 0;
-    color: var(--text-primary);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
-    margin-bottom: 25px;
+    color: var(--text-main);
+    font-size: 1.2rem;
+    margin-bottom: 24px;
 }
 
 .btn-link {
     display: block;
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
-    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    border-radius: var(--radius-md);
     text-align: center;
     text-decoration: none;
     font-weight: 500;
     box-sizing: border-box;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
 }
 
 .btn-link:hover {
-    background: rgba(0, 240, 255, 0.1);
-    border-color: var(--accent-cyan);
-    color: var(--accent-cyan);
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+    background: var(--bg-light);
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 /* --- Data Tables --- */
 .data-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 20px;
-    color: var(--text-primary);
 }
 
 .data-table th, .data-table td {
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 15px;
+    padding: 16px;
     text-align: left;
+    border-bottom: 1px solid var(--border);
 }
 
 .data-table th {
-    background: rgba(0, 0, 0, 0.3);
-    color: var(--accent-purple);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.data-table tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--bg-light);
+}
+
+/* --- Animations --- */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.action-card, .form-container {
+    animation: slideUp 0.5s ease-out forwards;
 }
