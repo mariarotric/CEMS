@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} | CEMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .form-container { background: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .data-table th, .data-table td { border: 1px solid var(--border); padding: 12px; text-align: left; }
+        .data-table th { background-color: var(--light); }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <h3>CEMS Portal</h3>
+            <div class="sidebar-menu">
+                <a href="{{ url_for('dashboard') }}">🏠 Back to Dashboard</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <h2>{{ title }}</h2>
+            </header>
+
+            <!-- Status Messages -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div style="background: #d1fae5; color: #065f46; padding: 10px; border-radius: 6px; margin-bottom: 20px;">
+                  {% for message in messages %}{{ message }}{% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <!-- Dynamic Form Injection -->
+            <div class="form-container">
+                <form method="POST">
+                    {% if title == 'Manage Branches' %}
+                        <div class="form-group">
+                            <label>Branch Name</label>
+                            <input type="text" name="branch_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" name="location" required>
+                        </div>
+                    {% endif %}
+                    
+                    <button type="submit" class="btn-primary" style="width: auto; padding: 10px 20px;">Submit</button>
+                </form>
+            </div>
+
+            <!-- Dynamic Data Table -->
+            {% if data %}
+            <div class="action-card" style="width: 100%;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <!-- Dynamically generate table headers based on dictionary keys -->
+                            {% for key in data[0].keys() %}
+                                <th>{{ key | replace('_', ' ') | title }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            {% for value in row.values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

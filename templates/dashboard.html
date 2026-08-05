@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CEMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .btn-link {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--dark);
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        .btn-link:hover {
+            background: var(--light);
+            border-color: var(--gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>CEMS Admin</h3>
+            <div class="sidebar-menu">
+                <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+                {% if role == 'Administrator' %}
+                    <a href="{{ url_for('manage_branches') }}">🏢 Branch Setup</a>
+                {% elif role == 'Branch Manager' %}
+                    <a href="{{ url_for('assign_delivery') }}">📦 Deliveries</a>
+                    <a href="{{ url_for('manage_payroll') }}">💰 Payroll</a>
+                {% elif role == 'Employee' %}
+                    <a href="{{ url_for('my_deliveries') }}">📋 My Tasks</a>
+                {% endif %}
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="user-info">
+                    <h2>Welcome back, {{ username }}!</h2>
+                    <p>Current Role: <strong>{{ role }}</strong></p>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            </header>
+
+            <div class="module-grid">
+                <!-- Administrator Modules[cite: 1, 2] -->
+                {% if role == 'Administrator' %}
+                    <div class="action-card">
+                        <h3>Branch Management</h3>
+                        <a href="{{ url_for('manage_branches') }}" class="btn-link">Add / Edit Branches</a>
+                    </div>
+
+                <!-- Branch Manager Modules[cite: 1, 2] -->
+                {% elif role == 'Branch Manager' %}
+                    <div class="action-card">
+                        <h3>Delivery Operations</h3>
+                        <a href="{{ url_for('assign_delivery') }}" class="btn-link">Assign New Deliveries</a>
+                    </div>
+                    <div class="action-card">
+                        <h3>Workforce Management</h3>
+                        <a href="{{ url_for('manage_payroll') }}" class="btn-link">Calculate Payroll</a>
+                    </div>
+
+                <!-- Employee Modules[cite: 1, 2] -->
+                {% elif role == 'Employee' %}
+                    <div class="action-card">
+                        <h3>Active Deliveries</h3>
+                        <a href="{{ url_for('my_deliveries') }}" class="btn-link">View Assigned Deliveries</a>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+        
+    </div>
+</body>
+</html>

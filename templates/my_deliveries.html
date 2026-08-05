@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Deliveries | CEMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Table styling just for data pages */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th { background-color: var(--light); color: var(--dark); }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-Pending { background: #fef08a; color: #854d0e; }
+        .status-In-Transit { background: #bfdbfe; color: #1e40af; }
+        .status-Delivered { background: #bbf7d0; color: #166534; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <h3>CEMS Admin</h3>
+            <div class="sidebar-menu">
+                <a href="{{ url_for('dashboard') }}">🏠 Back to Dashboard</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="user-info">
+                    <h2>Assigned Deliveries</h2>
+                    <p>Tracking module for {{ username }}</p>
+                </div>
+            </header>
+
+            <div class="action-card" style="width: 100%;">
+                <h3>Your Active Route</h3>
+                
+                {% if deliveries %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tracking ID</th>
+                            <th>Destination</th>
+                            <th>Status</th>
+                            <th>Assigned Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- This loops through the MySQL data sent by Flask -->
+                        {% for item in deliveries %}
+                        <tr>
+                            <td><strong>{{ item.tracking_number }}</strong></td>
+                            <td>{{ item.destination_address }}</td>
+                            <td>
+                                <span class="status-badge status-{{ item.status | replace(' ', '-') }}">
+                                    {{ item.status }}
+                                </span>
+                            </td>
+                            <td>{{ item.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td><button class="btn-primary" style="padding: 5px 10px;">Update</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <p>You have no assigned deliveries at this time.</p>
+                {% endif %}
+            </div>
+        </main>
+        
+    </div>
+</body>
+</html>
