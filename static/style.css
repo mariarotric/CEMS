@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+
+:root {
+    /* High-Tech Cyber Color Palette */
+    --bg-main: #0b0f19;
+    --bg-panel: rgba(17, 24, 39, 0.7);
+    --accent-cyan: #00f0ff;
+    --accent-purple: #7000ff;
+    --text-primary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-glow: rgba(0, 240, 255, 0.3);
+    --danger: #ff003c;
+    --success: #05fb7a;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: radial-gradient(circle at top right, #1a1c2c 0%, var(--bg-main) 100%);
+    color: var(--text-primary);
+    margin: 0;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* --- Glassmorphism Cards --- */
+.login-wrapper, .dashboard-layout {
+    display: flex;
+    height: 100vh;
+}
+
+.login-wrapper {
+    justify-content: center;
+    align-items: center;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+}
+
+.login-card, .action-card, .form-container {
+    background: var(--bg-panel);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border-radius: 16px;
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Neon Top Border Effect */
+.login-card::before, .action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+}
+
+.login-card h2 {
+    text-align: center;
+    color: var(--accent-cyan);
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px var(--border-glow);
+}
+
+/* --- Form Elements --- */
+.form-group { margin-bottom: 25px; }
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 15px var(--border-glow);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* --- High-Tech Buttons --- */
+.btn-primary {
+    background: linear-gradient(45deg, var(--accent-cyan), #00a2ff);
+    color: #000;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 8px;
+    font-weight: 700;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--border-glow);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* --- Dashboard Layout --- */
+.sidebar {
+    width: 260px;
+    background: rgba(10, 15, 26, 0.9);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h3 {
+    text-align: center;
+    color: var(--accent-purple);
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(112, 0, 255, 0.4);
+}
+
+.sidebar-menu a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 15px 30px;
+    display: block;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-menu a:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    border-left-color: var(--accent-cyan);
+    padding-left: 35px; /* Slide effect */
+}
+
+.main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-panel);
+    backdrop-filter: blur(10px);
+    padding: 20px 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 40px;
+}
+
+.user-info h2 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.user-info p {
+    margin: 5px 0 0 0;
+    color: var(--accent-cyan);
+    font-weight: 500;
+}
+
+.btn-logout {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-logout:hover {
+    background: var(--danger);
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.4);
+}
+
+/* --- Dashboard Grids & Cards --- */
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.action-card {
+    padding: 30px;
+    position: relative;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.action-card h3 {
+    margin-top: 0;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.btn-link {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    box-sizing: border-box;
+    transition: all 0.3s;
+}
+
+.btn-link:hover {
+    background: rgba(0, 240, 255, 0.1);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+/* --- Data Tables --- */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: var(--text-primary);
+}
+
+.data-table th, .data-table td {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    text-align: left;
+}
+
+.data-table th {
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--accent-purple);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.data-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
