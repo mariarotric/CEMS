@@ -2,62 +2,426 @@
 {% block title %}Sign in{% endblock %}
 
 {% block auth_content %}
-<div class="min-h-screen w-full flex items-stretch bg-paper">
-  <div class="w-full min-h-screen grid md:grid-cols-2 overflow-hidden bg-white">
 
-    <!-- Left: brand / hero panel -->
-    <div class="relative hidden md:flex flex-col justify-between bg-ink-900 text-white p-10 route-grid">
-      <div>
+<!-- Lock the login screen to one viewport -->
+<div class="h-screen w-full overflow-hidden bg-paper">
+
+  <div class="w-full h-screen grid md:grid-cols-2 overflow-hidden bg-white">
+
+    <!-- ========================================================= -->
+    <!-- LEFT: BRAND / COURIER HERO -->
+    <!-- ========================================================= -->
+    <div
+      class="relative hidden md:flex flex-col bg-ink-900 text-white px-8 lg:px-10 py-6 lg:py-7 route-grid overflow-hidden"
+    >
+
+      <!-- Decorative circles -->
+      <div class="absolute -right-32 -top-32 w-80 h-80 rounded-full border border-white/5"></div>
+      <div class="absolute -right-20 -top-20 w-56 h-56 rounded-full border border-white/5"></div>
+
+
+      <!-- ======================================================= -->
+      <!-- BRAND + INTRO -->
+      <!-- ======================================================= -->
+      <div class="relative z-10 shrink-0">
+
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center font-display font-bold">
+
+          <div
+            class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center font-display font-bold text-ink-900 shadow-lg"
+          >
             CE
           </div>
 
           <div>
-            <p class="font-display font-semibold">CEMS</p>
-            <p class="text-[11px] text-white/50 font-mono-track uppercase tracking-wider">
+            <p class="font-display font-semibold">
+              CEMS
+            </p>
+
+            <p class="text-[10px] text-white/50 font-mono-track uppercase tracking-wider">
               Dispatch Console
             </p>
           </div>
+
         </div>
 
-        <h1 class="font-display text-3xl leading-tight font-semibold mt-12">
+
+        <h1 class="font-display text-3xl lg:text-[2.15rem] leading-[1.08] font-semibold mt-7">
           Every parcel,<br>
           every person,<br>
           one manifest.
         </h1>
 
-        <p class="text-white/55 text-sm mt-4 leading-relaxed max-w-xs">
+        <p class="text-white/50 text-xs lg:text-sm mt-3 leading-relaxed max-w-sm">
           Employee records, courier assignments, attendance and payroll —
           run your courier branch from a single console.
         </p>
+
       </div>
 
-      <div class="space-y-3 font-mono-track text-[11px] text-white/40">
+
+      <!-- ======================================================= -->
+      <!-- COURIER AREA -->
+      <!-- ======================================================= -->
+      <div class="relative flex-1 min-h-0 flex items-center justify-center">
+
+        <!-- Route lines -->
+        <div class="absolute inset-0 pointer-events-none opacity-50">
+
+          <div
+            class="absolute left-[5%] top-[20%] w-28 border-t border-dashed border-accent/40 rotate-[18deg]"
+          ></div>
+
+          <div
+            class="absolute right-[5%] top-[25%] w-24 border-t border-dashed border-accent/40 rotate-[-24deg]"
+          ></div>
+
+          <div
+            class="absolute left-[8%] bottom-[20%] w-24 border-t border-dashed border-accent/30 rotate-[-12deg]"
+          ></div>
+
+          <span
+            class="absolute left-[5%] top-[17%] w-2 h-2 rounded-full bg-accent"
+          ></span>
+
+          <span
+            class="absolute right-[4%] top-[23%] w-2 h-2 rounded-full bg-accent"
+          ></span>
+
+          <span
+            class="absolute left-[8%] bottom-[19%] w-2 h-2 rounded-full bg-accent"
+          ></span>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- FLOATING PARCEL -->
+        <!-- ===================================================== -->
+        <div class="absolute right-[10%] top-[15%] rotate-6 z-20">
+
+          <div
+            class="w-14 h-12 bg-accent rounded-md shadow-2xl flex items-center justify-center"
+          >
+
+            <div
+              class="w-9 h-7 border-2 border-ink-900/25 rounded-sm relative"
+            >
+
+              <div
+                class="absolute left-1/2 top-0 bottom-0 w-px bg-ink-900/20"
+              ></div>
+
+              <div
+                class="absolute left-0 right-0 top-1/2 h-px bg-ink-900/20"
+              ></div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- COURIER -->
+        <!-- ===================================================== -->
+        <div class="relative z-10 flex flex-col items-center scale-[0.82] lg:scale-[0.9]">
+
+          <!-- Ground shadow -->
+          <div
+            class="absolute bottom-[-8px] w-48 h-7 bg-black/30 blur-xl rounded-full"
+          ></div>
+
+
+          <!-- Helmet -->
+          <div class="relative z-20">
+
+            <div
+              class="w-28 h-16 bg-accent rounded-t-[3rem] rounded-b-xl shadow-xl"
+            ></div>
+
+            <div
+              class="absolute left-[-6px] right-[-6px] bottom-[-2px] h-4 bg-accent rounded-full"
+            ></div>
+
+            <div
+              class="absolute left-8 right-8 top-3 h-2 bg-white/70 rounded-full"
+            ></div>
+
+          </div>
+
+
+          <!-- Head -->
+          <div
+            class="relative z-10 -mt-1 w-20 h-20 bg-[#c98255] rounded-[45%] shadow-lg"
+          >
+
+            <!-- Ears -->
+            <div
+              class="absolute -left-2 top-9 w-4 h-7 bg-[#b96f49] rounded-full"
+            ></div>
+
+            <div
+              class="absolute -right-2 top-9 w-4 h-7 bg-[#b96f49] rounded-full"
+            ></div>
+
+            <!-- Eyes -->
+            <div
+              class="absolute left-4 top-8 w-3 h-2 bg-ink-900/70 rounded-full"
+            ></div>
+
+            <div
+              class="absolute right-4 top-8 w-3 h-2 bg-ink-900/70 rounded-full"
+            ></div>
+
+            <!-- Nose -->
+            <div
+              class="absolute left-1/2 top-10 w-2 h-3 bg-[#b96f49] rounded-full -translate-x-1/2"
+            ></div>
+
+            <!-- Smile -->
+            <div
+              class="absolute left-1/2 bottom-4 w-7 h-3 border-b-2 border-ink-900/50 -translate-x-1/2 rounded-full"
+            ></div>
+
+          </div>
+
+
+          <!-- Neck -->
+          <div class="w-8 h-5 bg-[#b96f49] -mt-1 z-0"></div>
+
+
+          <!-- ================================================= -->
+          <!-- JACKET -->
+          <!-- ================================================= -->
+          <div
+            class="relative -mt-2 w-44 h-44 bg-ink-700 rounded-t-[3rem] rounded-b-2xl shadow-2xl"
+          >
+
+            <!-- Collar -->
+            <div
+              class="absolute left-1/2 top-1 w-12 h-10 bg-ink-900/30 -translate-x-1/2 rounded-b-xl"
+            ></div>
+
+            <!-- Center zipper -->
+            <div
+              class="absolute left-1/2 top-10 bottom-8 w-px bg-white/20 -translate-x-1/2"
+            ></div>
+
+            <!-- CE badge -->
+            <div
+              class="absolute left-6 top-9 w-9 h-9 rounded-md bg-accent text-ink-900 flex items-center justify-center text-[10px] font-bold shadow-md"
+            >
+              CE
+            </div>
+
+            <!-- Left arm -->
+            <div
+              class="absolute -left-10 top-12 w-16 h-26 bg-ink-700 rounded-full rotate-[16deg] shadow-lg"
+            ></div>
+
+            <!-- Right arm -->
+            <div
+              class="absolute -right-10 top-12 w-16 h-26 bg-ink-700 rounded-full rotate-[-16deg] shadow-lg"
+            ></div>
+
+            <!-- Hands -->
+            <div
+              class="absolute -left-9 bottom-0 w-7 h-7 bg-[#c98255] rounded-full"
+            ></div>
+
+            <div
+              class="absolute -right-9 bottom-0 w-7 h-7 bg-[#c98255] rounded-full"
+            ></div>
+
+            <!-- Pocket -->
+            <div
+              class="absolute right-5 top-24 w-12 h-9 border border-white/10 rounded-md"
+            ></div>
+
+            <!-- Belt -->
+            <div
+              class="absolute left-0 right-0 bottom-5 h-5 bg-ink-900/80"
+            ></div>
+
+            <!-- Buckle -->
+            <div
+              class="absolute left-1/2 bottom-4 w-9 h-7 rounded bg-accent border-2 border-ink-900/30 -translate-x-1/2"
+            ></div>
+
+          </div>
+
+
+          <!-- ================================================= -->
+          <!-- PACKAGE -->
+          <!-- ================================================= -->
+          <div
+            class="absolute z-30 right-[-65px] top-[175px] rotate-[-7deg]"
+          >
+
+            <div
+              class="w-24 h-20 bg-accent rounded-lg shadow-2xl flex items-center justify-center"
+            >
+
+              <div
+                class="w-16 h-12 border-2 border-ink-900/20 rounded relative"
+              >
+
+                <div
+                  class="absolute left-1/2 top-0 bottom-0 w-px bg-ink-900/20"
+                ></div>
+
+                <div
+                  class="absolute left-0 right-0 top-1/2 h-px bg-ink-900/20"
+                ></div>
+
+                <span
+                  class="absolute top-1 left-2 text-[7px] font-mono text-ink-900/40"
+                >
+                  CEMS
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ================================================= -->
+          <!-- LEGS -->
+          <!-- ================================================= -->
+          <div class="flex gap-5 -mt-1">
+
+            <div
+              class="w-14 h-20 bg-ink-900 rounded-b-xl rounded-t-md -rotate-2 shadow-lg"
+            ></div>
+
+            <div
+              class="w-14 h-20 bg-ink-900 rounded-b-xl rounded-t-md rotate-2 shadow-lg"
+            ></div>
+
+          </div>
+
+
+          <!-- Shoes -->
+          <div class="flex gap-3 -mt-2">
+
+            <div
+              class="w-20 h-8 bg-white rounded-full rounded-tr-md shadow-xl"
+            ></div>
+
+            <div
+              class="w-20 h-8 bg-white rounded-full rounded-tl-md shadow-xl"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- CURRENT ROUTE CARD -->
+        <!-- ===================================================== -->
+        <div
+          class="absolute left-0 bottom-5 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl px-3 py-2.5 shadow-xl"
+        >
+
+          <p class="font-mono-track text-[8px] text-white/40 uppercase">
+            Current route
+          </p>
+
+          <p class="font-display text-sm text-white mt-0.5">
+            14 deliveries
+          </p>
+
+          <div class="flex items-center gap-2 mt-0.5">
+
+            <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+
+            <span class="text-[9px] text-white/50">
+              IN TRANSIT
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- DISPATCH CARD -->
+        <!-- ===================================================== -->
+        <div
+          class="absolute right-0 bottom-3 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl px-3 py-2.5 shadow-xl rotate-2"
+        >
+
+          <p class="font-mono-track text-[8px] text-white/40 uppercase">
+            Dispatch
+          </p>
+
+          <p class="font-display text-sm text-white mt-0.5">
+            READY
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- FEATURES -->
+      <!-- ======================================================= -->
+      <div
+        class="relative z-10 shrink-0 space-y-2 font-mono-track text-[9px] lg:text-[10px] text-white/40"
+      >
+
         <div class="flex items-center gap-2">
+
           <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+
           ROLE-BASED ACCESS · ADMIN / MANAGER / AGENT
+
         </div>
 
         <div class="flex items-center gap-2">
+
           <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+
           LIVE DELIVERY STATUS TRACKING
+
         </div>
 
         <div class="flex items-center gap-2">
+
           <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+
           ATTENDANCE + PAYROLL BUILT IN
+
         </div>
+
       </div>
+
     </div>
 
-    <!-- Right: waybill-style login card -->
-    <div class="relative flex items-center justify-center p-8 sm:p-10 lg:p-16">
+
+    <!-- ========================================================= -->
+    <!-- RIGHT: LOGIN PANEL -->
+    <!-- ========================================================= -->
+    <div
+      class="relative h-screen flex items-center justify-center px-8 sm:px-10 lg:px-16 overflow-hidden"
+    >
+
       <div class="w-full max-w-md">
 
-        <div class="route-tag">SIGN IN</div>
+        <!-- Sign in label -->
+        <div class="route-tag">
+          SIGN IN
+        </div>
 
-        <p class="font-mono-track text-[11px] text-ink-900/40 uppercase tracking-widest">
+        <p
+          class="font-mono-track text-[11px] text-ink-900/40 uppercase tracking-widest"
+        >
           Waybill · Access Stub
         </p>
 
@@ -69,12 +433,26 @@
           Sign in with your CEMS credentials to continue.
         </p>
 
-        <div class="waybill-stripe rounded-full my-6"></div>
 
-        <form method="POST" action="{{ url_for('login') }}" class="space-y-4">
+        <!-- Stripe -->
+        <div class="waybill-stripe rounded-full my-5"></div>
 
+
+        <!-- ===================================================== -->
+        <!-- FORM -->
+        <!-- ===================================================== -->
+        <form
+          method="POST"
+          action="{{ url_for('login') }}"
+          class="space-y-4"
+        >
+
+          <!-- Username -->
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5">
+
+            <label
+              class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5"
+            >
               Username
             </label>
 
@@ -83,13 +461,20 @@
               name="username"
               required
               autofocus
+              autocomplete="username"
               class="w-full px-4 py-2.5 rounded-lg border border-line bg-paper focus:bg-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent text-sm transition"
               placeholder="e.g. admin_user"
             >
+
           </div>
 
+
+          <!-- Password -->
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5">
+
+            <label
+              class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5"
+            >
               Password
             </label>
 
@@ -97,15 +482,27 @@
               type="password"
               name="password"
               required
+              autocomplete="current-password"
               class="w-full px-4 py-2.5 rounded-lg border border-line bg-paper focus:bg-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent text-sm transition"
               placeholder="••••••••"
             >
+
           </div>
 
+
+          <!-- ================================================= -->
+          <!-- FLASH MESSAGES -->
+          <!-- ================================================= -->
           {% with messages = get_flashed_messages(with_categories=true) %}
+
             {% if messages %}
+
               {% for category, message in messages %}
-                <div class="flex items-center gap-2 text-sm px-3.5 py-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700">
+
+                <div
+                  class="flex items-center gap-2 text-sm px-3.5 py-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700"
+                >
+
                   <svg
                     class="w-4 h-4 shrink-0"
                     fill="none"
@@ -113,23 +510,34 @@
                     stroke-width="2"
                     viewBox="0 0 24 24"
                   >
+
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
+
                   </svg>
 
                   {{ message }}
+
                 </div>
+
               {% endfor %}
+
             {% endif %}
+
           {% endwith %}
 
+
+          <!-- ================================================= -->
+          <!-- SIGN IN BUTTON -->
+          <!-- ================================================= -->
           <button
             type="submit"
             class="w-full bg-ink-900 hover:bg-ink-700 text-white font-medium text-sm py-3 rounded-lg transition flex items-center justify-center gap-2"
           >
+
             Sign in
 
             <svg
@@ -139,31 +547,57 @@
               stroke-width="2"
               viewBox="0 0 24 24"
             >
+
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
+
             </svg>
+
           </button>
 
         </form>
 
-        <div class="perforated my-6"></div>
 
-        <div class="text-[11px] font-mono-track text-ink-900/35 space-y-1">
-          <p class="uppercase tracking-widest text-ink-900/40 mb-1.5">
+        <!-- Perforation -->
+        <div class="perforated my-5"></div>
+
+
+        <!-- ===================================================== -->
+        <!-- DEMO CREDENTIALS -->
+        <!-- ===================================================== -->
+        <div
+          class="text-[10px] font-mono-track text-ink-900/35 space-y-1"
+        >
+
+          <p
+            class="uppercase tracking-widest text-ink-900/40 mb-1.5"
+          >
             Demo credentials
           </p>
 
-          <p>ADMIN &nbsp;·&nbsp; admin_user / admin123</p>
-          <p>MANAGER &nbsp;·&nbsp; branch_mgr / manager123</p>
-          <p>AGENT &nbsp;·&nbsp; delivery_agent / worker123</p>
+          <p>
+            ADMIN &nbsp;·&nbsp; admin_user / admin123
+          </p>
+
+          <p>
+            MANAGER &nbsp;·&nbsp; branch_mgr / manager123
+          </p>
+
+          <p>
+            AGENT &nbsp;·&nbsp; delivery_agent / worker123
+          </p>
+
         </div>
 
       </div>
+
     </div>
 
   </div>
+
 </div>
+
 {% endblock %}
