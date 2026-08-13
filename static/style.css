@@ -1,0 +1,111 @@
+/* ===================================================================
+   CEMS — signature "waybill" design details that utility classes
+   can't express cleanly. Everything else is Tailwind (CDN, in base.html).
+   =================================================================== */
+
+:root {
+  --ink: #0E1526;
+  --ink-soft: #1B2338;
+  --paper: #F3F5F8;
+  --accent: #FF6A3D;
+  --line: #E3E7EE;
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  background-color: var(--paper);
+}
+
+.font-display {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+.font-mono-track {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.04em;
+}
+
+/* Barcode stripe strip — used on the login card and dashboard header
+   to evoke a shipping waybill / manifest stub. */
+.waybill-stripe {
+  height: 10px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0px,
+    var(--ink) 2px,
+    transparent 2px,
+    transparent 5px,
+    var(--ink) 5px,
+    var(--ink) 6px,
+    transparent 6px,
+    transparent 10px,
+    var(--ink) 10px,
+    var(--ink) 13px,
+    transparent 13px,
+    transparent 16px
+  );
+  opacity: 0.9;
+}
+
+/* Perforated tear-line divider, like a detachable receipt stub */
+.perforated {
+  position: relative;
+  border: none;
+  height: 0;
+  border-top: 2px dashed var(--line);
+}
+.perforated::before,
+.perforated::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  background: var(--paper);
+  border-radius: 9999px;
+}
+.perforated::before { left: -9px; }
+.perforated::after { right: -9px; }
+
+/* Rotated "route ticket" corner tag */
+.route-tag {
+  position: absolute;
+  top: 14px;
+  right: -34px;
+  transform: rotate(45deg);
+  width: 140px;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  padding: 3px 0;
+  background: var(--accent);
+  color: white;
+}
+
+/* Subtle route-line backdrop for the login hero panel */
+.route-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.14) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD2DE; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #AEB6C4; }
+
+/* Sidebar active link accent bar */
+.nav-active {
+  position: relative;
+  background: rgba(255,106,61,0.14);
+  color: #FFD9C7;
+}
+.nav-active::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
