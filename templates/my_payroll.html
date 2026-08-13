@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}My payslips{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <p class="font-mono-track text-[11px] uppercase tracking-widest text-ink-900/40">My work</p>
+  <h1 class="font-display text-2xl font-semibold mt-0.5">Payslips</h1>
+</div>
+
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+  {% for p in records %}
+  <div class="bg-white border border-line rounded-xl shadow-card p-6 relative overflow-hidden">
+    <div class="route-tag">PAYSLIP</div>
+    <p class="font-mono-track text-[11px] uppercase tracking-widest text-ink-900/40">{{ p.month }}</p>
+    <p class="font-display text-3xl font-semibold mt-2">₹{{ '%.2f'|format(p.net_salary) }}</p>
+    <p class="text-xs text-ink-900/40 mb-4">Net pay</p>
+
+    <div class="perforated my-4"></div>
+
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between"><span class="text-ink-900/50">Basic salary</span><span class="font-mono-track">₹{{ '%.2f'|format(p.basic_salary) }}</span></div>
+      <div class="flex justify-between"><span class="text-ink-900/50">Bonus</span><span class="font-mono-track text-emerald-600">+₹{{ '%.2f'|format(p.bonus) }}</span></div>
+      <div class="flex justify-between"><span class="text-ink-900/50">Deductions</span><span class="font-mono-track text-red-500">−₹{{ '%.2f'|format(p.deductions) }}</span></div>
+    </div>
+  </div>
+  {% else %}
+  <div class="sm:col-span-2 lg:col-span-3 bg-white border border-line rounded-xl p-12 text-center">
+    <p class="text-sm text-ink-900/40">No payslips generated yet.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

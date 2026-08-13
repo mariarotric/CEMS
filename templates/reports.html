@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <p class="font-mono-track text-[11px] uppercase tracking-widest text-ink-900/40">Insight</p>
+  <h1 class="font-display text-2xl font-semibold mt-0.5">Reports</h1>
+</div>
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <div class="bg-white border border-line rounded-xl p-5 shadow-card">
+    <p class="text-xs text-ink-900/45 font-medium">Present today</p>
+    <p class="font-display text-3xl font-semibold mt-1">{{ attendance_today }}</p>
+  </div>
+  <div class="bg-ink-900 text-white rounded-xl p-5 shadow-card">
+    <p class="text-xs text-white/50 font-medium">Total payroll disbursed</p>
+    <p class="font-display text-2xl font-semibold mt-1 text-accent">₹{{ '%.2f'|format(payroll_total) }}</p>
+  </div>
+  {% set total_deliveries = delivery_status | sum(attribute='count') %}
+  <div class="bg-white border border-line rounded-xl p-5 shadow-card">
+    <p class="text-xs text-ink-900/45 font-medium">Total deliveries</p>
+    <p class="font-display text-3xl font-semibold mt-1">{{ total_deliveries }}</p>
+  </div>
+  {% set delivered = (delivery_status | selectattr('status','equalto','Delivered') | map(attribute='count') | first) or 0 %}
+  <div class="bg-white border border-line rounded-xl p-5 shadow-card">
+    <p class="text-xs text-ink-900/45 font-medium">Success rate</p>
+    <p class="font-display text-3xl font-semibold mt-1">{{ ((delivered / total_deliveries * 100) if total_deliveries else 0) | round(1) }}%</p>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-2 gap-6 mb-6">
+  <!-- Branch performance -->
+  <div class="bg-white border border-line rounded-xl shadow-card overflow-hidden">
+    <div class="px-5 py-4 border-b border-line">
+      <p class="text-sm font-semibold">Branch performance</p>
+    </div>
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-left text-[11px] uppercase tracking-wider text-ink-900/40 border-b border-line">
+          <th class="px-5 py-3 font-medium">Branch</th>
+          <th class="px-5 py-3 font-medium text-right">Total</th>
+          <th class="px-5 py-3 font-medium text-right">Delivered</th>
+          <th class="px-5 py-3 font-medium text-right">Failed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in branch_performance %}
+        <tr class="border-b border-line last:border-0">
+          <td class="px-5 py-3 font-medium">{{ b.branch_name }}</td>
+          <td class="px-5 py-3 text-right font-mono-track text-xs">{{ b.total }}</td>
+          <td class="px-5 py-3 text-right font-mono-track text-xs text-emerald-600">{{ b.delivered }}</td>
+          <td class="px-5 py-3 text-right font-mono-track text-xs text-red-500">{{ b.failed }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="px-5 py-8 text-center text-ink-900/40">No branch data yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Top agents -->
+  <div class="bg-white border border-line rounded-xl shadow-card overflow-hidden">
+    <div class="px-5 py-4 border-b border-line">
+      <p class="text-sm font-semibold">Top delivery agents</p>
+    </div>
+    <div class="p-5 space-y-4">
+      {% for a in top_agents %}
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="font-medium">{{ a.full_name }}</span>
+          <span class="font-mono-track text-xs text-ink-900/50">{{ a.delivered }}/{{ a.total_deliveries }} delivered</span>
+        </div>
+        <div class="h-2 rounded-full bg-paper overflow-hidden">
+          <div class="h-full bg-accent rounded-full" style="width: {{ (a.delivered / a.total_deliveries * 100) if a.total_deliveries else 0 }}%"></div>
+        </div>
+      </div>
+      {% else %}
+      <p class="text-sm text-ink-900/40 text-center py-6">No delivery activity yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Delivery status table -->
+<div class="bg-white border border-line rounded-xl shadow-card overflow-hidden">
+  <div class="px-5 py-4 border-b border-line">
+    <p class="text-sm font-semibold">Delivery status breakdown</p>
+  </div>
+  <div class="p-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    {% for row in delivery_status %}
+    <div class="border border-line rounded-lg p-4 text-center">
+      <p class="font-display text-2xl font-semibold">{{ row.count }}</p>
+      <p class="text-[11px] text-ink-900/50 mt-1">{{ row.status }}</p>
+    </div>
+    {% else %}
+    <p class="col-span-full text-center text-ink-900/40 py-6 text-sm">No data yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

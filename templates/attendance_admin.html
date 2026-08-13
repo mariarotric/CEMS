@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Attendance{% endblock %}
+
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+  <div>
+    <p class="font-mono-track text-[11px] uppercase tracking-widest text-ink-900/40">Operations</p>
+    <h1 class="font-display text-2xl font-semibold mt-0.5">Attendance</h1>
+  </div>
+  <form method="GET" class="flex items-center gap-2">
+    <input type="date" name="date" value="{{ selected_date }}"
+           class="px-3 py-2 rounded-lg border border-line bg-white text-sm focus:outline-none focus:ring-2 focus:ring-accent/40">
+    <button class="text-sm font-medium bg-ink-900 hover:bg-ink-700 text-white px-4 py-2 rounded-lg transition">View</button>
+  </form>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <!-- Marked records -->
+  <div class="lg:col-span-2 bg-white border border-line rounded-xl shadow-card overflow-hidden">
+    <div class="px-5 py-4 border-b border-line">
+      <p class="text-sm font-semibold">Records for {{ selected_date }}</p>
+    </div>
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-left text-[11px] uppercase tracking-wider text-ink-900/40 border-b border-line">
+          <th class="px-5 py-3 font-medium">Employee</th>
+          <th class="px-5 py-3 font-medium">Status</th>
+          <th class="px-5 py-3 font-medium">Check-in</th>
+          <th class="px-5 py-3 font-medium">Check-out</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr class="border-b border-line last:border-0">
+          <td class="px-5 py-3">
+            <p class="font-medium">{{ r.full_name }}</p>
+            <p class="text-xs text-ink-900/40">{{ r.designation or '' }}</p>
+          </td>
+          <td class="px-5 py-3">
+            <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full border
+              {{ 'bg-emerald-50 text-emerald-700 border-emerald-200' if r.status=='Present'
+                 else 'bg-red-50 text-red-700 border-red-200' if r.status=='Absent'
+                 else 'bg-amber-50 text-amber-700 border-amber-200' }}">{{ r.status }}</span>
+          </td>
+          <td class="px-5 py-3 font-mono-track text-xs text-ink-900/60">{{ r.check_in or '—' }}</td>
+          <td class="px-5 py-3 font-mono-track text-xs text-ink-900/60">{{ r.check_out or '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="px-5 py-10 text-center text-ink-900/40">No attendance marked for this date yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mark attendance -->
+  <div class="bg-white border border-line rounded-xl shadow-card p-6">
+    <p class="text-sm font-semibold mb-4">Mark attendance</p>
+    <form method="POST" action="{{ url_for('attendance_mark_admin') }}" class="space-y-4">
+      <input type="hidden" name="date" value="{{ selected_date }}">
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5">Employee</label>
+        <select name="employee_id" required class="w-full px-4 py-2.5 rounded-lg border border-line bg-paper focus:bg-white focus:outline-none focus:ring-2 focus:ring-accent/40 text-sm">
+          {% for e in unmarked %}
+          <option value="{{ e.id }}">{{ e.full_name }}</option>
+          {% else %}
+          <option disabled>All employees marked</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5">Status</label>
+        <select name="status" class="w-full px-4 py-2.5 rounded-lg border border-line bg-paper focus:bg-white focus:outline-none focus:ring-2 focus:ring-accent/40 text-sm">
+          <option>Present</option>
+          <option>Absent</option>
+          <option>Half Day</option>
+          <option>Leave</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5">Check-in</label>
+          <input type="time" name="check_in" class="w-full px-3 py-2.5 rounded-lg border border-line bg-paper text-sm focus:outline-none focus:ring-2 focus:ring-accent/40">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wide text-ink-900/50 mb-1.5">Check-out</label>
+          <input type="time" name="check_out" class="w-full px-3 py-2.5 rounded-lg border border-line bg-paper text-sm focus:outline-none focus:ring-2 focus:ring-accent/40">
+        </div>
+      </div>
+      <button type="submit" class="w-full bg-ink-900 hover:bg-ink-700 text-white text-sm font-medium py-2.5 rounded-lg transition">Save record</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
