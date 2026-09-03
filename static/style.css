@@ -1,7 +1,4 @@
-/* ===================================================================
-   CEMS — signature "waybill" design details that utility classes
-   can't express cleanly. Everything else is Tailwind (CDN, in base.html).
-   =================================================================== */
+
 
 :root {
   --ink: #0E1526;
