@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Track Package{% endblock %}
+
+{% block auth_content %}
+<div class="min-h-screen flex items-start justify-center bg-paper px-4 py-10">
+  <div class="w-full max-w-xl">
+
+    <div class="text-center mb-6">
+      <div class="w-10 h-10 mx-auto rounded-lg bg-accent flex items-center justify-center font-display font-bold text-white">CE</div>
+      <h1 class="font-display text-2xl font-semibold mt-3">Track your package</h1>
+      <p class="text-sm text-ink-900/50 mt-1">Enter your tracking number to see its current status.</p>
+    </div>
+
+    <form method="GET" action="{{ url_for('track_package') }}" class="flex gap-2 mb-6">
+      <input type="text" name="tracking_number" required value="{{ tracking_number }}"
+             placeholder="e.g. TRK-100234"
+             class="flex-1 px-4 py-2.5 rounded-lg border border-line bg-white focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent text-sm transition">
+      <button type="submit"
+              class="px-5 py-2.5 rounded-lg bg-ink-900 hover:bg-ink-700 text-white text-sm font-medium transition">
+        Track
+      </button>
+    </form>
+
+    {% if searched %}
+      {% if delivery %}
+      <div class="bg-white border border-line rounded-2xl shadow-card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <p class="font-mono-track text-[11px] uppercase tracking-widest text-ink-900/40">Tracking Number</p>
+            <p class="font-display text-lg font-semibold">{{ delivery.tracking_number }}</p>
+          </div>
+          {% set d = delivery %}
+          {% include "_status_badge.html" %}
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+          <div>
+            <p class="text-[11px] uppercase tracking-wide text-ink-900/40">Destination</p>
+            <p class="mt-0.5">{{ delivery.destination_address }}</p>
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-wide text-ink-900/40">Branch</p>
+            <p class="mt-0.5">{{ delivery.branch_name or '—' }}</p>
+          </div>
+        </div>
+
+        <div class="perforated my-4"></div>
+
+        <p class="text-[11px] uppercase tracking-widest text-ink-900/40 mb-3">Status Timeline</p>
+        {% if history %}
+        <ol class="space-y-3">
+          {% for h in history %}
+          <li class="flex items-start gap-3 text-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0"></span>
+            <div>
+              <p class="font-medium">{{ h.new_status }}</p>
+              <p class="text-[11px] text-ink-900/40 font-mono-track">{{ h.changed_at }}</p>
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+        {% else %}
+        <p class="text-sm text-ink-900/50">No status history recorded yet — currently <strong>{{ delivery.status }}</strong>.</p>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="bg-white border border-line rounded-2xl shadow-card p-6 text-center text-sm text-ink-900/60">
+        No delivery found for that tracking number. Double-check it and try again.
+      </div>
+      {% endif %}
+    {% endif %}
+
+    <p class="text-center text-[11px] text-ink-900/35 mt-8">
+      <a href="{{ url_for('login') }}" class="hover:text-ink-900/60 underline">Staff sign in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

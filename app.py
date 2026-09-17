@@ -1,3 +1,4 @@
+import os
 from functools import wraps
 from datetime import date, datetime
 
@@ -6,7 +7,11 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
-app.secret_key = "super_secure_secret_key"  # Required for session management
+# CHANGED: secret key now comes from an environment variable instead of being
+# hardcoded in source. Set it before running, e.g.:
+#   export CEMS_SECRET_KEY="something-long-and-random"
+# Falls back to a dev-only value so the app still runs locally without setup.
+app.secret_key = os.environ.get("CEMS_SECRET_KEY", "dev-only-insecure-key-change-me")
 
 # ---------------------------------------------------------------
 # MySQL Configuration (XAMPP defaults: user 'root', blank password)
@@ -17,6 +22,12 @@ db_config = {
     "password": "",
     "database": "cems_db",
 }
+
+# NEW: single source of truth for delivery statuses. Used to validate any
+# incoming status value instead of trusting raw form input.
+VALID_DELIVERY_STATUSES = [
+    "Pending", "Picked Up", "In Transit", "Out for Delivery", "Delivered", "Failed"
+]
 
 
 def get_db_connection():
@@ -37,6 +48,19 @@ def query(sql, params=None, fetchone=False, commit=False):
     cursor.close()
     conn.close()
     return result
+
+
+# NEW: writes one row to delivery_status_history every time a delivery's
+# status changes, so there's a timestamped audit trail instead of only ever
+# seeing the current status. Requires the delivery_status_history table
+# (see schema_migration.sql).
+def log_status_change(delivery_id, old_status, new_status, changed_by=None):
+    query(
+        """INSERT INTO delivery_status_history (delivery_id, old_status, new_status, changed_by)
+           VALUES (%s, %s, %s, %s)""",
+        (delivery_id, old_status, new_status, changed_by),
+        commit=True,
+    )
 
 
 # ---------------------------------------------------------------
@@ -112,6 +136,38 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
+
+# ---------------------------------------------------------------
+# NEW: Public package tracking (no login required)
+# ---------------------------------------------------------------
+@app.route("/track", methods=["GET"])
+def track_package():
+    tracking_number = request.args.get("tracking_number", "").strip()
+    delivery = None
+    history = []
+    searched = bool(tracking_number)
+
+    if tracking_number:
+        delivery = query(
+            """SELECT d.*, b.branch_name FROM deliveries d
+               LEFT JOIN branches b ON d.branch_id = b.id
+               WHERE d.tracking_number = %s""",
+            (tracking_number,), fetchone=True,
+        )
+        if delivery:
+            history = query(
+                "SELECT * FROM delivery_status_history WHERE delivery_id=%s ORDER BY changed_at ASC",
+                (delivery["id"],),
+            )
+
+    return render_template(
+        "track.html",
+        delivery=delivery,
+        history=history,
+        tracking_number=tracking_number,
+        searched=searched,
+    )
 
 
 # ---------------------------------------------------------------
@@ -325,7 +381,7 @@ def assign_delivery():
         if existing:
             flash("That tracking number already exists.", "error")
         else:
-            query(
+            new_id = query(
                 """INSERT INTO deliveries (tracking_number, customer_name, destination_address,
                                             assigned_to, branch_id, status)
                    VALUES (%s,%s,%s,%s,%s,'Pending')""",
@@ -333,6 +389,8 @@ def assign_delivery():
                  f.get("assigned_to") or None, f.get("branch_id") or None),
                 commit=True,
             )
+            # NEW: seed the audit trail with the delivery's creation event
+            log_status_change(new_id, None, "Pending", changed_by=session["id"])
             flash("Delivery assigned successfully.", "success")
             return redirect(url_for("deliveries_list"))
 
@@ -342,11 +400,28 @@ def assign_delivery():
 @app.route("/deliveries/reassign/<int:delivery_id>", methods=["POST"])
 @roles_required("Administrator", "Branch Manager")
 def reassign_delivery(delivery_id):
+    new_status = request.form["status"]
+
+    # CHANGED: validate against the known status list instead of trusting raw input
+    if new_status not in VALID_DELIVERY_STATUSES:
+        flash("Invalid delivery status.", "error")
+        return redirect(url_for("deliveries_list"))
+
+    current = query("SELECT status FROM deliveries WHERE id=%s", (delivery_id,), fetchone=True)
+    if not current:
+        flash("Delivery not found.", "error")
+        return redirect(url_for("deliveries_list"))
+
     query(
         "UPDATE deliveries SET assigned_to=%s, status=%s WHERE id=%s",
-        (request.form.get("assigned_to") or None, request.form["status"], delivery_id),
+        (request.form.get("assigned_to") or None, new_status, delivery_id),
         commit=True,
     )
+
+    # NEW: log the change if the status actually changed
+    if current["status"] != new_status:
+        log_status_change(delivery_id, current["status"], new_status, changed_by=session["id"])
+
     flash("Delivery updated.", "success")
     return redirect(url_for("deliveries_list"))
 
@@ -366,12 +441,35 @@ def my_deliveries():
 @app.route("/update-status/<int:delivery_id>", methods=["POST"])
 @roles_required("Employee")
 def update_status(delivery_id):
-    new_status = request.form["status"]
+    new_status = request.form.get("status", "")
+
+    # CHANGED: reject anything that isn't one of the known statuses
+    if new_status not in VALID_DELIVERY_STATUSES:
+        flash("Invalid delivery status.", "error")
+        return redirect(url_for("my_deliveries"))
+
+    delivery = query(
+        "SELECT status FROM deliveries WHERE id=%s AND assigned_to=%s",
+        (delivery_id, session["id"]), fetchone=True
+    )
+    if not delivery:
+        flash("Delivery not found or not assigned to you.", "error")
+        return redirect(url_for("my_deliveries"))
+
+    # CHANGED: once a delivery is closed out, an agent can no longer edit it
+    if delivery["status"] in ("Delivered", "Failed"):
+        flash("This delivery is already closed and can't be updated further.", "error")
+        return redirect(url_for("my_deliveries"))
+
     query(
         "UPDATE deliveries SET status=%s WHERE id=%s AND assigned_to=%s",
         (new_status, delivery_id, session["id"]),
         commit=True,
     )
+
+    # NEW: record the change in the audit trail
+    log_status_change(delivery_id, delivery["status"], new_status, changed_by=session["id"])
+
     flash("Delivery status updated.", "success")
     return redirect(url_for("my_deliveries"))
 
@@ -440,6 +538,21 @@ def checkin():
 @app.route("/my-attendance/checkout", methods=["POST"])
 @roles_required("Employee")
 def checkout():
+    # CHANGED: require an existing check-in for today before allowing checkout,
+    # and block a second checkout on the same day.
+    today_att = query(
+        "SELECT check_in, check_out FROM attendance WHERE employee_id=%s AND date=%s",
+        (session["id"], date.today()), fetchone=True
+    )
+
+    if not today_att or not today_att["check_in"]:
+        flash("You need to check in before you can check out.", "error")
+        return redirect(url_for("my_attendance"))
+
+    if today_att["check_out"]:
+        flash("You've already checked out for today.", "error")
+        return redirect(url_for("my_attendance"))
+
     now = datetime.now().strftime("%H:%M:%S")
     query(
         "UPDATE attendance SET check_out=%s WHERE employee_id=%s AND date=%s",
